@@ -1,0 +1,35 @@
+metadata:
+  creationTimestamp: "2023-10-14T03:14:17Z"
+  generation: 6
+  managedFields:
+  - apiVersion: argoproj.io/v1alpha1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:spec:
+        .: {}
+        f:clusterResourceBlacklist: {}
+        f:description: {}
+        f:destinations: {}
+        f:sourceRepos: {}
+      f:status: {}
+    manager: Go-http-client
+    operation: Update
+    time: "2023-10-14T03:20:53Z"
+  name: webapp
+  namespace: default
+  resourceVersion: "505467"
+  uid: 2d1a3f5e-0616-40e7-b481-a59f1da35171
+spec:
+  clusterResourceBlacklist:
+  - group: '""'
+    kind: ClusterRoleBinding
+  - group: '""'
+    kind: ClusterRole
+  description: Custom project for webapp-nginx
+  destinations:
+  - name: in-cluster
+    namespace: '*'
+    server: https://kubernetes.default.svc
+  sourceRepos:
+  - https://github.com/cvidhyac/learn-helm.git
+status: {}

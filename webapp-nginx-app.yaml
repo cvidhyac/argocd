@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: webapp-nginx
+spec:
+  destination:
+    name: ''
+    namespace: webapp
+    server: 'https://kubernetes.default.svc'
+  source:
+    path: webapp-nginx
+    repoURL: 'https://github.com/cvidhyac/learn-helm.git'
+    targetRevision: HEAD
+    helm:
+      valueFiles:
+        - values.yaml
+  project: default
