@@ -74,8 +74,6 @@ Get a project configuration as yaml - `argocd proj get project_name -o yaml`
 - Custom projects can be created via yaml, or from UI with ALLOW/DENY rules.
 - For an example, see - [webapp-proj.yaml](./webapp-proj.yaml)
 
-
-
 ### PR title checker
 
 See - https://github.com/marketplace/actions/pr-title-checker
