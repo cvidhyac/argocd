@@ -53,17 +53,8 @@ k edit svc new-argo-argocd-server -n argocd
 | Refresh State           | Compare the latest git code with live state to determine configuration drift, trigger sync if needed       |
 | Health                  | ArgoCD provides options to check health of the app, can the app serve traffic ?                            |
 
-### PR title checker
-
-See - https://github.com/marketplace/actions/pr-title-checker
-If this plugin is enabled, it can then help Organize your PR into one of the following categories:
-
-- `fix` for bugfixes
-- `chore` unit tests / improvements
-- `feat` new features and enhancements
-- `docs` for doc PR's
-
 ## Argo CLI commands
+
 
 ### Create new app
 
@@ -82,3 +73,15 @@ Get a project configuration as yaml - `argocd proj get project_name -o yaml`
 
 - Custom projects can be created via yaml, or from UI with ALLOW/DENY rules.
 - For an example, see - [webapp-proj.yaml](./webapp-proj.yaml)
+
+
+
+### PR title checker
+
+See - https://github.com/marketplace/actions/pr-title-checker
+If this plugin is enabled, it can then help Organize your PR into one of the following categories:
+
+- `fix` for bugfixes
+- `chore` unit tests / improvements
+- `feat` new features and enhancements
+- `docs` for doc PR's
