@@ -77,3 +77,8 @@ Sync app - `argocd app sync webapp-nginx`
 List apps -  `argocd app list`
 List projects - `argocd proj list`
 Get a project configuration as yaml - `argocd proj get project_name -o yaml`
+
+### Create new project
+
+- Custom projects can be created via yaml, or from UI with ALLOW/DENY rules.
+- For an example, see - [webapp-proj.yaml](./webapp-proj.yaml)
