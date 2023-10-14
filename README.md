@@ -66,8 +66,10 @@ argocd app create webapp-nginx --repo https://github.com/cvidhyac/learn-helm.git
 
 Sync app - `argocd app sync webapp-nginx`
 List apps -  `argocd app list`
+Delete app -  `argocd app delete webapp-nginx`
 List projects - `argocd proj list`
 Get a project configuration as yaml - `argocd proj get project_name -o yaml`
+
 
 ### Create new project
 
