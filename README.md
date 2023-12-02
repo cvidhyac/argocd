@@ -4,39 +4,46 @@ https://argo-cd.readthedocs.io/en/stable/getting_started/
 
 ## Get Argo CLI
 
-`brew install argocd`
+ArgoCLI - `brew install argocd`
+Kustomize - `brew install kustomize`
+
+Run `argocd version` and verify it runs without errors
 
 ## Local Argo Install
 
 - HA and non-HA manifests available. For local development, we only require non-HA `install.yaml`
   Start the k8s cluster, and run:
 
-The following helm chart install the non-HA version by default:
-
 ```shell
-helm repo add argo https://argoproj.github.io/argo-helm`
-helm install new-argo argo/argo-cd --version 4.8.0
+kubectl create ns argocd
+kubectl config set-context --current --namespace=argocd
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/v2.5.8/manifests/install.yaml
 ```
-Check argo manifests are installed : `k get all -n argocd`
 
-**Tip**
-
-Use Default namespace in the k8s cluster, the local argocli `add cluster` has issues loading
-different k8s contexts.
-
+VERSION=v2.4.11
+curl -sSL -o
+argocd-linux-amd64 https://github.com/argoproj/argo-cd/releases/download/$VERSION/argocd-linux-amd64
+sudo install -m 555 argocd-linux-amd64 /usr/local/bin/argocd
+rm argocd-linux-amd64
 
 ## Enable Access for Argo UI locally
 
 - Change the argocd server to NodePort
 
 ```shell
-k edit svc new-argo-argocd-server -n argocd
+kubectl edit svc argocd-server -n argocd
 ```
 
 - Access the UI : https://127.0.0.1:NODE_PORT
 - Login Username : `admin`
 - Login Password : Find login password using
   `k get secret -n argocd argocd-initial-admin-secret -o json | jq -r .data.password | base64 -d | pbcopy`
+
+## Argo CLI login to argo server
+
+`argocd login 127.0.0.1:node_port`
+
+Run the argo CLI command : `argocd app list` and verify it runs without errors
 
 ## Argo Terminologies / Concepts
 
@@ -55,6 +62,13 @@ k edit svc new-argo-argocd-server -n argocd
 
 ## Argo CLI commands
 
+| Action                | Command                           |
+|-----------------------|-----------------------------------|
+| List clusters         | `argocd cluster list              |
+| List apps             | `argocd app list`                 |
+| Sync app              | `argocd app sync app_name`        |
+| Delete app            | `argocd app delete app_name`      |
+| Get app configuration | `argocd proj get app_name -oyaml` |
 
 ### Create new app
 
@@ -63,13 +77,6 @@ argocd app create webapp-nginx --repo https://github.com/cvidhyac/learn-helm.git
  --path ./webapp-nginx --dest-namespace default --dest-server https://kubernetes.default.svc \
  --directory-recurse --validate=false --values-literal-file values.yaml --upsert
  ```
-
-Sync app - `argocd app sync webapp-nginx`
-List apps -  `argocd app list`
-Delete app -  `argocd app delete webapp-nginx`
-List projects - `argocd proj list`
-Get a project configuration as yaml - `argocd proj get project_name -o yaml`
-
 
 ### Create new project
 
@@ -85,3 +92,17 @@ If this plugin is enabled, it can then help Organize your PR into one of the fol
 - `chore` unit tests / improvements
 - `feat` new features and enhancements
 - `docs` for doc PR's
+
+## Argo Reconciliation loop
+
+- Argo depends on `Reconciliation loop` to trigger sync live state to desired state.
+- Recon loop can be set in 2 ways :
+    1. Pull
+        - Set `ARGOCD_RECONCILIATION_TIMEOUT` in the `argocd-cm` configmap, and restart the deploy
+          for `argocd-repo-server`.
+        - The argocd-repo-server would now poll the git repo for the `timeout.reconciliation`
+          parameter and trigger sync.
+    2. Push
+        - Define a Webhook in the git provider (github, gitlab etc.,) configured to the
+          argocd-repo-server push events to the ArgoCD api endpoints.
+        - Now, the git webhook will execute on the git event and push events to argo server.
